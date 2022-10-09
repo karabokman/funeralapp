@@ -1,0 +1,113 @@
+{% load static %}
+<html lang="en">
+
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link href="{% static 'css/bootstrap.min.css' %}" rel="stylesheet">
+      <title>Invoice</title>
+
+      <style>
+          @page {
+            size: A4;
+            }
+      </style>
+
+  </head>
+
+<body>
+
+<main>
+  <div class="container-fluid pt-4 px-4">
+    <div class="text-center text-white bg-dark">
+      <h1>INVOICE</h1>
+    </div>
+  </div>
+  <div class="container-fluid pt-4 px-4">
+
+<div class="container-fluid pt-4 px-4">
+    <div class="d-flex align-items-center justify-content-between mb-4">
+      <h1>Funeral APP</h1>
+      <div class="text-end">
+        <h6>Invoice: {{invoice.id}}</h6>
+        <h6>Created: {{invoice.created}}</h6>
+        <h6>Due: {{invoice.due}}</h6>
+        <h6>Paid: {{invoice.paid}}</h6>
+      </div>
+    </div>
+</div>
+
+  <div class="container-fluid pt-4 px-4">
+    <div class="d-flex align-items-center justify-content-between mb-4">
+    <div class="text-start">
+      <h6>Name: {{invoice.member.full_name}} {{invoice.member.surname}}</h6>
+        <h6>Policy Number: {{invoice.member.policy_no}}</h6>
+        <h6>Identity Number: {{invoice.member.identity_no}}</h6>
+        <h6>Contacts: {{invoice.member.contacts}}</h6>
+    </div>
+      <div class="text-end">
+        <h6><strong>Funeral Parlour</strong></h6>
+        <h6>102 Brooklyn rd </h6>
+        <h6>New York</h6>
+        <h6>0123</h6>
+    </div>
+  </div>
+  </div>
+
+    <div class="container-fluid pt-4 px-4">
+       <table class="table text-start align-middle table-hover mb-0">
+
+                <thead class="bg-dark text-white">
+
+                <tr>
+
+                    <th scope="col" class="rounded col-9">Description</th>
+
+                    <th scope="col" class="rounded text-end">Amount</th>
+
+                </tr>
+
+                </thead>
+
+                <tbody>
+                {% for item in invoiceitems %}
+                <tr>
+                    <td>{{item.description}}</td>
+
+                    <td class="text-end">R {{item.amount}}</td>
+
+                </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+      <div class="container-fluid pt-2 px-2">
+        <div class="text-end">
+        <h6><strong>Total: R {{invoice.amount}}</strong></h6>
+            {% if invoice.status == 'PAID' %}
+          <h6><strong>Paid: R {{invoice.amount}}</strong></h6>
+            <h6><strong>Balance: R 0.00</strong></h6>
+            {% else %}
+            <h6><strong>Paid: R 0.00</strong></h6>
+            <h6><strong>Balance: R {{invoice.amount}}</strong></h6>
+            {% endif %}
+      </div>
+      </div>
+    </div>
+
+<div class="container-fluid pt-4 px-4">
+      <div class="text-center pt-2 pb-2 mb-3 border-bottom">
+        <h6 class="h2 ">Additional Notes</h6>
+      </div>
+    <p class="text-center">A finance charge of 1.5% will be made on unpaid balances after 30 days.</p>
+
+</div>
+
+  </div>
+
+</main>
+
+<script src="{% static 'js/bootstrap.bundle.min.js' %}"></script>
+
+</body>
+
+</html>

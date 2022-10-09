@@ -1,0 +1,81 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title  %}
+Create Quote
+{% endblock %}
+
+
+{% block content %}
+{% include 'partials/_messages.html' %}
+<div class="container-fluid pt-4 px-4">
+    <h4 class="text-center"><strong>Create Quote</strong></h4>
+    <br>
+    <form action="{% url 'create-quote' %}" method="post">
+    {% csrf_token %}
+    <div class="bg-light row g-4">
+        <div class="col-sm-12 col-md-6 col-xl-6">
+        <div class="row g-4">
+        <div class="col">
+            <input type="text" class="form-control" placeholder="Enter Full name(s)" name="name" required />
+        </div>
+        <div class="col">
+            <input type="text" class="form-control" placeholder="Enter Surname" name="surname" required />
+        </div>
+    </div>
+    <br>
+    <div class="row">
+        <div class="col">
+            <input type="text" class="form-control" placeholder="Enter email" name="email" />
+         </div>
+        <div class="col">
+            <input type="text" class="form-control" placeholder="Enter Contacts" name="contacts" required />
+         </div>
+      </div>
+      <br>
+      <div class="row">
+         <div class="col">
+            <input type="text" class="form-control" placeholder="Enter Company name" name="company" required />
+         </div>
+         </div>
+        </div>
+        <div class="col-sm-12 col-md-6 col-xl-6">
+        <div class="row">
+        <div class="col">
+            <input type="text" class="form-control" placeholder="Enter Address" name="address" required />
+        </div>
+    </div>
+    <br>
+    <div class="row">
+        <div class="col">
+            <input type="text" class="form-control" placeholder="Enter City" name="city" required/>
+         </div>
+      </div>
+      <br>
+      <div class="row">
+         <div class="col">
+            <select class="form-select" name="province" required="required">
+               <option>Gauteng</option>
+               <option>Limpopo</option>
+               <option>Northern Cape</option>
+                <option>Western Cape</option>
+                <option>Eastern Cape</option>
+                <option>Mpumalanga</option>
+                <option>North West</option>
+                <option>Free State</option>
+                <option>Kwa-Zulu Natal</option>
+            </select>
+         </div>
+          <div class="col">
+            <input type="text" class="form-control" placeholder="Enter Postal Code" name="zipcode" required />
+         </div>
+         </div>
+        </div>
+        <button type="submit" class="btn btn-outline-secondary py-3 w-100 mb-4">Add</button>
+    </div>
+       </form>
+</div>
+
+
+
+{% endblock %}

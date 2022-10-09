@@ -1,0 +1,143 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title  %}
+Employee Profile
+{% endblock %}
+
+{% block content %}
+{% include 'partials/_messages.html' %}
+
+<div class="container-fluid pt-4 px-4">
+
+<div class="container-fluid pt-4 px-4">
+    <div class="bg-light rounded p-4">
+        <div class="d-flex align-items-center justify-content-between mb-4">
+
+            <h6 class="mb-0"><strong>Employee Number: </strong>{{employee.employee_no}}</h6>
+            <a class="btn btn-sm btn-danger" href="{% url 'delete-employee' employee.id %}">Delete</a>
+        </div>
+    </div>
+</div>
+    <div class="row">
+        <div class="col">
+        <h6 class="mb-0"><strong>Last Login: </strong>{{stats.last_login}}</h6>
+        </div>
+    </div>
+
+<div class="bg-light rounded p-4 p-sm-5 my-4 mx-3">
+<form action="{% url 'employee-profile' employee.id %}" method="post">
+    {% csrf_token %}
+        <div class="d-flex align-items-center justify-content-between mb-4">
+
+            <h6 class="mb-0"><strong>Edit Staff</strong></h6>
+
+        </div>
+    <div class="form-floating mb-3">
+
+        <input type="text" value="{{employee.full_name}}" name="name" class="form-control" id="floatingText" placeholder="jhondoe" required>
+
+        <label for="floatingText">Full name</label>
+
+    </div>
+    <div class="form-floating mb-3">
+
+        <input type="text" value="{{employee.surname}}" name="surname" class="form-control" id="floatingText" placeholder="jhondoe" required>
+
+        <label for="floatingText">Surname</label>
+
+    </div>
+    <div class="form-floating mb-3">
+
+        <input type="text" value="{{employee.identity_no}}" name="idnum" class="form-control" id="floatingText" placeholder="9721517882" required>
+
+        <label for="floatingText">Identity Number</label>
+
+    </div>
+    <div class="form-floating mb-3">
+        <select class="form-select" value="{{employee.gender}}" id="gender" name="gender" required="required">
+            <option selected>{{employee.gender}}</option>
+            {% if employee.gender == "FEMALE" %}
+                <option>MALE</option>
+                <option>OTHER</option>
+            {% elif employee.gender == "MALE" %}
+                <option>FEMALE</option>
+                <option>OTHER</option>
+            {% else %}
+                <option>MALE</option>
+                <option>FEMALE</option>
+            {% endif %}
+        </select>
+        <label for="gender">Gender</label>
+    </div>
+    <div class="form-floating mb-3">
+
+        <input type="text" value="{{address.street}}" name="address" class="form-control" id="floatingText" placeholder="142 Compton Ave" required>
+
+        <label for="floatingText">Street Address</label>
+
+    </div>
+    <div class="form-floating mb-3">
+
+        <input type="text" value="{{address.city}}" name="city" class="form-control" id="floatingText" placeholder="New York" required>
+
+        <label for="floatingText">City</label>
+
+    </div>
+    <div class="form-floating mb-3">
+
+        <select class="form-select" id="province" name="province" required="required">
+            <option selected>{{address.province}}</option>
+               <option>Gauteng</option>
+               <option>Limpopo</option>
+               <option>Northern Cape</option>
+                <option>Western Cape</option>
+                <option>Eastern Cape</option>
+                <option>Mpumalanga</option>
+                <option>North West</option>
+                <option>Free State</option>
+                <option>Kwa-Zulu Natal</option>
+            </select>
+
+        <label for="province">Province</label>
+
+    </div>
+    <div class="form-floating mb-3">
+
+        <input type="text" value="{{address.zip}}" name="zipcode" class="form-control" id="floatingText" placeholder="21510" required>
+
+        <label for="floatingText">Postal Code</label>
+
+    </div>
+    <div class="form-floating mb-3">
+
+        <input type="text" value="{{employee.contacts}}" name="contacts" class="form-control" id="floatingText" placeholder="jhondoe" required>
+
+        <label for="floatingText">Contacts</label>
+
+    </div>
+    <div class="form-floating mb-3">
+
+        <input type="email" value="{{employee.email}}" name="email" class="form-control" id="floatingText" placeholder="name@example.com">
+
+        <label for="floatingText">Email</label>
+
+    </div>
+    <div class="form-floating mb-3">
+        <select class="form-select" id="role" name="role" required="required">
+            <option selected>{{employee.role}}</option>
+            {% if employee.role == "STAFF" %}
+                <option>ADMIN</option>
+            {% else %}
+               <option>STAFF</option>
+            {% endif %}
+        </select>
+        <label for="role">Role</label>
+    </div>
+
+    <button type="submit" class="btn btn-outline-secondary py-3 w-100 mb-4">Save</button>
+</form>
+</div>
+
+
+{% endblock %}

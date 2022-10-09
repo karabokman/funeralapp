@@ -1,0 +1,136 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title  %}
+Add Transaction
+{% endblock %}
+
+{% block content %}
+{% include 'partials/_messages.html' %}
+
+<div class="container-fluid pt-4 px-4">
+    <div class="text-center rounded p-4 bg-light">
+        <div class="d-flex align-items-center justify-content-between mb-4">
+            <h6 class="mb-0"><strong>Full name: <a href="{% url 'member-transactions' transaction.member.id %}" class="text-dark">{{transaction.member.full_name}} {{transaction.member.surname}}</a> </strong></h6>
+            <div class="button-group">
+                <a class="btn btn-sm btn-primary" href="{% url 'export-invoice' transaction.id %}">Export PDF</a>
+                <a class="btn btn-sm btn-success" href="{% url 'mark-transaction' transaction.id %}">
+                    {% if transaction.status == 'UNPAID' %}
+                    MARK PAID
+                    {% else %}
+                    MARK UNPAID
+                    {% endif %}
+                </a>
+                <a class="btn btn-sm btn-danger" href="{% url 'delete-transaction' transaction.id %}">Delete</a>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+<div class="container-fluid pt-4 px-4">
+    <div class="bg-light rounded p-4">
+        <dl class="row mb-0">
+            <dt class="col-sm-4">Policy Number</dt>
+            <dd class="col-sm-4">{{transaction.member.policy_no}}</dd>
+        </dl>
+        <dl class="row mb-0">
+            <dt class="col-sm-4">Invoice Number</dt>
+            <dd class="col-sm-4">{{transaction.id}}</dd>
+        </dl>
+        <dl class="row mb-0">
+            <dt class="col-sm-4">Status</dt>
+            <dd class="col-sm-4">{{transaction.status}}</dd>
+        </dl>
+        <dl class="row mb-0">
+            <dt class="col-sm-4">Created</dt>
+            <dd class="col-sm-4">{{transaction.created}}</dd>
+        </dl>
+        <dl class="row mb-0">
+            <dt class="col-sm-4">Due</dt>
+            <dd class="col-sm-4">{{transaction.due}}</dd>
+        </dl>
+        <dl class="row mb-0">
+            <dt class="col-sm-4">Paid</dt>
+            <dd class="col-sm-4">{{transaction.paid}}</dd>
+        </dl>
+        <dl class="row mb-0">
+            <dt class="col-sm-4">Total Amount</dt>
+            <dd class="col-sm-4">R {{transaction.amount}}</dd>
+        </dl>
+        <dl class="row mb-0">
+            <dt class="col-sm-4">Processed by</dt>
+            <dd class="col-sm-4">{{transaction.processed_by}}</dd>
+        </dl>
+    </div>
+</div>
+
+<div class="container-fluid pt-4 px-4">
+
+    <div class="text-center rounded p-4 bg-light">
+        <div class="d-flex align-items-center justify-content-between mb-4">
+
+            <h6 class="mb-0"><strong>Transaction</strong></h6>
+        </div>
+
+        <form action="{% url 'add-transaction' transaction.id %}" method="post">
+            {% csrf_token %}
+            <div class="row">
+        <div class="col">
+            <input type="text" class="form-control" placeholder="Enter description" name="description" required/>
+         </div>
+         <div class="col">
+            <input type="number" class="form-control" placeholder="Enter amount" name="amount" required />
+         </div>
+              <div class="col">
+           <button type="submit" class="btn btn-outline-secondary">Add</button>
+         </div>
+      </div>
+        </form>
+        <br>
+
+        <div class="table-responsive">
+
+            <table class="table text-start align-middle table-bordered table-hover mb-0">
+
+                <thead>
+
+                <tr>
+
+                    <th scope="col">Description</th>
+
+                    <th scope="col">Amount</th>
+
+                    <th scope="col">Action</th>
+
+                </tr>
+
+                </thead>
+
+                {% if items %}
+
+                <tbody>
+
+                {% for item in items %}
+
+                <tr>
+
+                    <td>{{item.description}}</td>
+
+                    <td>R {{item.amount}}</td>
+
+                    <td><a class="btn btn-sm btn-warning" href="{% url 'delete-item' item.id %}">Delete</a></td>
+                </tr>
+                {% endfor %}
+                </tbody>
+                {% else %}
+                <tr>
+                    <td class="text-center" colspan="3">No items found</td>
+                </tr>
+                {% endif %}
+            </table>
+        </div>
+    </div>
+</div>
+
+{% endblock %}

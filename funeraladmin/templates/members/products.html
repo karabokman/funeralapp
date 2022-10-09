@@ -1,0 +1,86 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title  %}
+Plans
+{% endblock %}
+
+
+{% block content %}
+{% include 'partials/_messages.html' %}
+<div class="container-fluid pt-4 px-4">
+    <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+        <h1 class="h2">Plans</h1>
+        <a class="btn btn-sm btn-secondary" data-bs-toggle="modal" data-bs-target="#myModal">Add</a>
+      </div>
+
+   <!-- The Modal -->
+<div class="modal fade" id="myModal">
+    <div class="modal-dialog">
+        <div class="bg-light rounded modal-content">
+            <!-- Modal Header -->
+            <div class="modal-header">
+                <h4 class="modal-title">Add Plan</h4>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+
+      		<!-- Modal body -->
+      		<div class="modal-body">
+                <div class="list-group">
+                    <form action="{% url 'view-plans' %}" method="post">
+                        {% csrf_token %}
+
+                    <div class="form-floating mb-3">
+
+                        <input type="text" name="name" class="form-control" id="floatingText"  required>
+
+                        <label for="floatingText">Name</label>
+
+                   </div>
+                    <div class="form-floating mb-3">
+
+                        <input type="number"  name="amount" class="form-control" id="floatingText" required>
+
+                        <label for="floatingText">Amount</label>
+
+                   </div>
+                    <button type="submit" class="btn btn-secondary py-3 w-100 mb-4">Add</button>
+                    </form>
+                </div>
+      		</div>
+
+            <!-- Modal footer -->
+            <div class="modal-footer">
+                <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+{% if plans %}
+<div class="list-group w-auto">
+    {% for plan in plans %}
+  <div class="list-group-item list-group-item-action d-flex gap-3 py-3" aria-current="true">
+    <div class="d-flex gap-2 w-100 justify-content-between">
+      <div>
+        <h6 class="mb-0">{{plan.name}}</h6>
+        <p class="mb-0 opacity-75">R {{plan.price}}</p>
+      </div>
+      <small class="opacity-50 text-nowrap">
+          <div class="button-group">
+              <a class="btn btn-sm btn-outline-primary" href="{% url 'edit-plan' plan.id %}">Edit</a>
+              <a class="btn btn-sm btn-outline-danger" href="{% url 'delete-plan' plan.id %}">Delete</a>
+            </div>
+      </small>
+    </div>
+  </div>
+    {% endfor %}
+</div>
+{% else %}
+    <h6>No plans found</h6>
+{% endif %}
+
+</div>
+
+{% endblock %}

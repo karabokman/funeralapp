@@ -1,0 +1,105 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title  %}
+Member Transactions
+{% endblock %}
+
+{% block content %}
+{% include 'partials/_messages.html' %}
+
+<div class="container-fluid pt-4 px-4">
+    <div class="text-center rounded p-4 bg-light">
+        <div class="d-flex align-items-center justify-content-between mb-4">
+            <h6 class="mb-0"><strong>Full name: <a href="{% url 'member-profile' member.id %}" class="text-dark">{{member.full_name}} {{member.surname}}</a> </strong></h6>
+        </div>
+    </div>
+</div>
+
+<div class="container-fluid pt-4 px-4">
+
+    <div class="text-center rounded p-4 bg-light">
+
+        <div class="d-flex align-items-center justify-content-between mb-4">
+
+            <h6 class="mb-0"><strong>Transactions</strong></h6>
+            <a class="btn btn-sm btn-secondary" href="{% url 'create-transaction' member.id %}">Add</a>
+        </div>
+
+        <div class="table-responsive">
+
+            <table class="table text-start align-middle table-bordered table-hover mb-0">
+
+                <thead>
+
+                <tr>
+
+                    <th scope="col">Invoice No</th>
+
+                    <th scope="col">Status</th>
+
+                    <th scope="col">Created</th>
+
+                    <th scope="col">Due</th>
+
+                    <th scope="col">Paid</th>
+
+                   <th scope="col">Amount</th>
+
+                    <th scope="col">Action</th>
+
+                </tr>
+
+                </thead>
+
+                {% if page_obj %}
+
+                <tbody>
+
+                {% for transact in page_obj %}
+
+                <tr>
+                    <td>{{transact.id}}</td>
+
+                    <td>{{transact.status}}</td>
+
+                    <td>{{transact.created}}</td>
+
+                    <td>{{transact.due}}</td>
+
+                    <td>{{transact.paid}}</td>
+
+                    <td>R {{transact.amount}}</td>
+
+                    <td><a class="btn btn-sm btn-primary" href="{% url 'add-transaction' transact.id %}">View</a></td>
+                </tr>
+                {% endfor %}
+                </tbody>
+                {% else %}
+                <tr>
+                    <td class="text-center" colspan="7">No transactions found</td>
+                </tr>
+                {% endif %}
+            </table>
+        </div>
+        <div class="d-flex align-items-center justify-content-between mb-4 p-3">
+            <div class="text-black">
+            Showing page {{page_obj.number}} of {{page_obj.paginator.num_pages}}
+            </div>
+            <ul class="pagination align-end float-end mr-auto">
+            {% if page_obj.has_previous %}
+            <li {% if page_obj.number == 1 %} class="page-item active" {% endif %}><a class="page-link" href="?page=1">&laquo; 1</a></li>
+            <li class="page-item"><a class="page-link" href="?page={{page_obj.previous_page_number}}">Previous</a></li>
+            {% endif %}
+
+            {% if page_obj.has_next %}
+            <li class="page-item"><a class="page-link" href="?page={{page_obj.next_page_number}}">Next</a></li>
+            <li class="page-item"><a class="page-link" href="?page={{page_obj.paginator.num_pages}}">{{page_obj.paginator.num_pages}} &raquo;</a></li>
+            {% endif %}
+            </ul>
+
+        </div>
+    </div>
+</div>
+
+{% endblock %}

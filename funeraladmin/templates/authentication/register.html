@@ -1,0 +1,129 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title  %}
+Add Staff
+{% endblock %}
+
+
+{% block content %}
+{% include 'partials/_messages.html' %}
+
+<div class="bg-light rounded p-4 p-sm-5 my-4 mx-3">
+<form action="{% url 'add-staff' %}" method="post">
+    {% csrf_token %}
+        <div class="d-flex align-items-center justify-content-between mb-4">
+
+            <h6 class="mb-0"><strong>Add Staff</strong></h6>
+
+        </div>
+    <div class="form-floating mb-3">
+
+        <input type="text" name="name" class="form-control" id="floatingText" placeholder="jhondoe" required>
+
+        <label for="floatingText">Full name</label>
+
+    </div>
+    <div class="form-floating mb-3">
+
+        <input type="text" name="surname" class="form-control" id="floatingText" placeholder="jhondoe" required>
+
+        <label for="floatingText">Surname</label>
+
+    </div>
+    <div class="form-floating mb-3">
+
+        <input type="text" name="idnum" class="form-control" id="floatingText" placeholder="9721517882" required>
+
+        <label for="floatingText">Identity Number</label>
+
+    </div>
+    <div class="form-floating mb-3">
+        <select class="form-select" id="gender" name="gender" required="required">
+               <option>FEMALE</option>
+               <option>MALE</option>
+                <option>OTHER</option>
+        </select>
+        <label for="gender">Gender</label>
+    </div>
+    <div class="form-floating mb-3">
+
+        <input type="text" name="address" class="form-control" id="floatingText" placeholder="142 Compton Ave" required>
+
+        <label for="floatingText">Street Address</label>
+
+    </div>
+    <div class="form-floating mb-3">
+
+        <input type="text" name="city" class="form-control" id="floatingText" placeholder="New York" required>
+
+        <label for="floatingText">City</label>
+
+    </div>
+    <div class="form-floating mb-3">
+
+        <select class="form-select" id="province" name="province" required="required">
+               <option>Gauteng</option>
+               <option>Limpopo</option>
+               <option>Northern Cape</option>
+                <option>Western Cape</option>
+                <option>Eastern Cape</option>
+                <option>Mpumalanga</option>
+                <option>North West</option>
+                <option>Free State</option>
+                <option>Kwa-Zulu Natal</option>
+            </select>
+
+        <label for="province">Province</label>
+
+    </div>
+    <div class="form-floating mb-3">
+
+        <input type="text" name="zipcode" class="form-control" id="floatingText" placeholder="9721517882" required>
+
+        <label for="floatingText">Postal Code</label>
+
+    </div>
+    <div class="form-floating mb-3">
+
+        <input type="text" name="contacts" class="form-control" id="floatingText" placeholder="jhondoe" required>
+
+        <label for="floatingText">Contacts</label>
+
+    </div>
+    <div class="form-floating mb-3">
+
+        <input type="email" name="email" class="form-control" id="floatingText" placeholder="name@example.com">
+
+        <label for="floatingText">Email</label>
+
+    </div>
+    <div class="form-floating mb-3">
+        <select class="form-select" id="role" name="role" required="required">
+               <option>STAFF</option>
+               <option>ADMIN</option>
+        </select>
+        <label for="role">Role</label>
+    </div>
+
+    <div class="form-floating mb-4">
+
+        <input type="password" name="password" class="form-control" id="floatingPassword" placeholder="Password" required>
+
+        <label for="floatingPassword">Password</label>
+
+    </div>
+
+    <div class="form-floating mb-4">
+
+        <input type="password" name="password1" class="form-control" id="floatingPassword" placeholder="Confirm Password" required>
+
+        <label for="floatingPassword">Confirm Password</label>
+
+    </div>
+
+    <button type="submit" class="btn btn-outline-secondary py-3 w-100 mb-4">Add</button>
+</form>
+</div>
+
+{% endblock %}

@@ -1,0 +1,119 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title  %}
+Dashboard
+{% endblock %}
+
+{% block content %}
+{% include 'partials/_messages.html' %}
+{% if user.role == "SUPER-ADMIN" %}
+<div class="container-fluid pt-4 px-4">
+   <div class="row g-4">
+        <div class="col-sm-6 col-xl-3">
+            <div class="bg-light rounded d-flex align-items-center justify-content-between p-4">
+                <div class="ms-3">
+                    <p class="mb-2">Members</p>
+                    <h6 class="mb-0">{{membersNo}}</h6>
+                </div>
+            </div>
+        </div>
+        <div class="col-sm-6 col-xl-3">
+            <div class="bg-light rounded d-flex align-items-center justify-content-between p-4">
+                <div class="ms-3">
+                    <p class="mb-2">Overdue</p>
+                    <h6 class="mb-0">{{overdue}}</h6>
+                </div>
+            </div>
+        </div>
+        <div class="col-sm-6 col-xl-3">
+            <div class="bg-light rounded d-flex align-items-center justify-content-between p-4">
+                <div class="ms-3">
+                    <p class="mb-2">Staff</p>
+                    <h6 class="mb-0">{{staff}}</h6>
+                </div>
+            </div>
+        </div>
+        <div class="col-sm-6 col-xl-3">
+            <div class="bg-light rounded d-flex align-items-center justify-content-between p-4">
+                <div class="ms-3">
+                    <p class="mb-2">Quotes</p>
+                    <h6 class="mb-0">{{quotes}}</h6>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endif %}
+
+<div class="container-fluid pt-4 px-4">
+
+    <div class="text-center rounded p-4 bg-light">
+
+        <div class="d-flex align-items-center justify-content-between mb-4">
+
+            <h6 class="mb-0"><strong>Members</strong></h6>
+            <a href="{% url 'view-members' %}" class="text-dark"><strong>Show All</strong></a>
+        </div>
+
+        <div class="table-responsive">
+
+            <table class="table text-start align-middle table-bordered table-hover mb-0">
+
+                <thead>
+
+                <tr>
+
+                    <th scope="col">Policy No</th>
+
+                    <th scope="col">Full name</th>
+
+                    <th scope="col">Surname</th>
+
+                    <th scope="col">Identity No</th>
+
+                   <th scope="col">Contacts</th>
+
+                    <th scope="col">Marital Status</th>
+
+                    <th scope="col">Action</th>
+
+                </tr>
+
+                </thead>
+
+                {% if members %}
+
+                <tbody>
+
+                {% for member in members %}
+
+                <tr>
+
+                    <td>{{member.policy_no}}</td>
+
+                    <td>{{member.full_name}}</td>
+
+                    <td>{{member.surname}}</td>
+
+                    <td>{{member.identity_no}}</td>
+
+                    <td>{{member.contacts}}</td>
+
+                    <td>{{member.marital_status}}</td>
+
+                    <td><a class="btn btn-sm btn-primary" href="{% url 'member-profile' member.id %}">View</a></td>
+                </tr>
+                {% endfor %}
+                </tbody>
+                {% else %}
+                <tr>
+                    <td class="text-center" colspan="7">No Members found</td>
+                </tr>
+                {% endif %}
+            </table>
+        </div>
+    </div>
+</div>
+
+{% endblock %}

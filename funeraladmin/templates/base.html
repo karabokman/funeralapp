@@ -1,0 +1,112 @@
+{% load static %}
+<html lang="en">
+
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>FuneralApp - {% block title %}
+    {% endblock %}</title>
+    <link href="{% static 'css/sidebar.css' %}" rel="stylesheet">
+    <link href="{% static 'css/bootstrap.min.css' %}" rel="stylesheet">
+
+  </head>
+
+<body>
+
+<div id="mySidebar" class="sidebar d-flex flex-column flex-shrink-0 ">
+    <a href="javascript:void(0)" class="closebtn" onclick="closeNav()">&times;</a>
+  <a href="/" class="d-flex align-items-center mb-3 mb-md-0 me-md-auto text-decoration-none">
+      <span class="fs-4">FuneralApp</span>
+    </a>
+    <hr>
+    <ul class="nav nav-pills flex-column mb-auto">
+      <li>
+        <a href="{% url 'homepage' %}" class="nav-link">
+          Dashboard
+        </a>
+      </li>
+      <li>
+        <a href="{% url 'all-quotes' %}" class="nav-link">
+          Quotes
+        </a>
+      </li>
+      {% if not user.role == 'STAFF' %}
+      <li>
+        <a href="{% url 'view-plans' %}" class="nav-link">
+          Plans
+        </a>
+      </li>
+      {% endif %}
+      <li>
+        <a href="{% url 'add-member' %}" class="nav-link">
+          Add Member
+        </a>
+      </li>
+      <li>
+        <a href="{% url 'view-members' %}" class="nav-link">
+          Members
+        </a>
+      </li>
+      {% if not user.role == 'STAFF' %}
+      <li>
+        <a href="{% url 'staff-members' %}" class="nav-link">
+          Staff
+        </a>
+      </li>
+      {% endif %}
+      <li>
+        {% if user.role == 'SUPER-ADMIN' %}
+        <a href="{% url 'all-transactions' %}" class="nav-link">
+          Transactions
+        </a>
+      </li>
+      <li>
+        <a href="#" class="nav-link">
+          Statistics
+        </a>
+      </li>
+      {% endif %}
+      <li>
+        <a href="{% url 'logout' %}" class="nav-link">
+          Log out
+        </a>
+      </li>
+    </ul>
+    <hr>
+    <div class="">
+      <a href="#" class="d-flex align-items-center text-decoration-none" aria-expanded="false">
+        <strong>{{user.full_name}} {{user.surname}}</strong>
+      </a>
+    </div>
+</div>
+
+<div id="main">
+  <nav class="navbar navbar-dark bg-dark">
+    <div class="container-fluid">
+      <div class="col">
+        <button class="openbtn" onclick="openNav()">&#9776;</button>
+      </div>
+        <div class="col text-center">
+            <a href="{% url 'homepage' %}" class="text-decoration-none"><h3><strong class="text-white">FuneralApp</strong></h3></a>
+        </div>
+        <div class="col text-end">
+            <strong class="text-white">{{user.full_name}} {{user.surname}} - {{user.employee_no}}</strong>
+        </div>
+    </div>
+  </nav>
+
+    {% block content %}
+
+    {% endblock %}
+
+
+</div>
+
+
+<script src="{% static 'js/sidebar.js' %}"></script>
+<script src="{% static 'js/bootstrap.bundle.min.js' %}"></script>
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+</body>
+
+</html>

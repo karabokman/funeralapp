@@ -1,0 +1,166 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title  %}
+Quote
+{% endblock %}
+
+{% block content %}
+{% include 'partials/_messages.html' %}
+
+<div class="container-fluid pt-4 px-4">
+    <div class="text-center rounded p-4 bg-light">
+        <div class="d-flex align-items-center justify-content-between mb-4">
+            <h6 class="mb-0"><strong>Edit Quote</strong></h6>
+            <div class="button-group">
+                <a class="btn btn-sm btn-primary" href="{% url 'export-quote' quote.id %}">Export PDF</a>
+                <a class="btn btn-sm btn-success" href="{% url 'mark-quote' quote.id %}">
+                    {% if quote.status == 'UNPAID' %}
+                    MARK PAID
+                    {% else %}
+                    MARK UNPAID
+                    {% endif %}
+                </a>
+                <a class="btn btn-sm btn-danger" href="{% url 'delete-quote' quote.id %}">Delete</a>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+<div class="container-fluid pt-4 px-4">
+    <div class="bg-light rounded p-4">
+    <div class="d-flex align-items-center justify-content-between mb-4">
+        <div class="col-sm-12 col-md-6 col-xl-6">
+            <dl class="row mb-0">
+            <dt class="col-sm-4">Full name</dt>
+            <dd class="col-sm-4">{{quote.full_name}} {{quote.surname}}</dd>
+            </dl>
+            <dl class="row mb-0">
+            <dt class="col-sm-4">Contacts</dt>
+            <dd class="col-sm-4">{{quote.contacts}}</dd>
+            </dl>
+            <dl class="row mb-0">
+            <dt class="col-sm-4">Email Address</dt>
+            <dd class="col-sm-4">{{quote.email}}</dd>
+            </dl>
+            <dl class="row mb-0">
+            <dt class="col-sm-4">Street</dt>
+            <dd class="col-sm-4">{{quote.street}}</dd>
+            </dl>
+            <dl class="row mb-0">
+            <dt class="col-sm-4">City</dt>
+            <dd class="col-sm-4">{{quote.city}}</dd>
+            </dl>
+            <dl class="row mb-0">
+            <dt class="col-sm-4">Province</dt>
+            <dd class="col-sm-4">{{quote.province}}</dd>
+            </dl>
+            <dl class="row mb-0">
+            <dt class="col-sm-4">Postal Code</dt>
+            <dd class="col-sm-4">{{quote.Zip_code}}</dd>
+            </dl>
+        </div>
+        <div class="col-sm-12 col-md-6 col-xl-6">
+        <dl class="row mb-0">
+            <dt class="col-sm-4">Quote Number</dt>
+            <dd class="col-sm-4">{{quote.id}}</dd>
+        </dl>
+        <dl class="row mb-0">
+            <dt class="col-sm-4">Status</dt>
+            <dd class="col-sm-4">{{quote.status}}</dd>
+        </dl>
+        <dl class="row mb-0">
+            <dt class="col-sm-4">Created</dt>
+            <dd class="col-sm-4">{{quote.created}}</dd>
+        </dl>
+        <dl class="row mb-0">
+            <dt class="col-sm-4">Due</dt>
+            <dd class="col-sm-4">{{quote.due}}</dd>
+        </dl>
+        <dl class="row mb-0">
+            <dt class="col-sm-4">Paid</dt>
+            <dd class="col-sm-4">{{quote.paid}}</dd>
+        </dl>
+        <dl class="row mb-0">
+            <dt class="col-sm-4">Total Amount</dt>
+            <dd class="col-sm-4">R {{quote.amount}}</dd>
+        </dl>
+        <dl class="row mb-0">
+            <dt class="col-sm-4">Processed by</dt>
+            <dd class="col-sm-4">{{quote.processed_by}}</dd>
+        </dl>
+        </div>
+    </div>
+    </div>
+</div>
+
+<div class="container-fluid pt-4 px-4">
+
+    <div class="text-center rounded p-4 bg-light">
+        <div class="d-flex align-items-center justify-content-between mb-4">
+
+            <h6 class="mb-0"><strong>Quote</strong></h6>
+        </div>
+
+        <form action="{% url 'edit-quote' quote.id %}" method="post">
+            {% csrf_token %}
+            <div class="row">
+        <div class="col">
+            <input type="text" class="form-control" placeholder="Enter description" name="description" required/>
+         </div>
+         <div class="col">
+            <input type="number" class="form-control" placeholder="Enter amount" name="amount" required />
+         </div>
+              <div class="col">
+           <button type="submit" class="btn btn-outline-secondary">Add</button>
+         </div>
+      </div>
+        </form>
+        <br>
+
+        <div class="table-responsive">
+
+            <table class="table text-start align-middle table-bordered table-hover mb-0">
+
+                <thead>
+
+                <tr>
+
+                    <th scope="col">Description</th>
+
+                    <th scope="col">Amount</th>
+
+                    <th scope="col">Action</th>
+
+                </tr>
+
+                </thead>
+
+                {% if items %}
+
+                <tbody>
+
+                {% for item in items %}
+
+                <tr>
+
+                    <td>{{item.description}}</td>
+
+                    <td>R {{item.amount}}</td>
+
+                    <td><a class="btn btn-sm btn-warning" href="{% url 'delete-itemquote' item.id %}">Delete</a></td>
+                </tr>
+                {% endfor %}
+                </tbody>
+                {% else %}
+                <tr>
+                    <td class="text-center" colspan="3">No items found</td>
+                </tr>
+                {% endif %}
+            </table>
+        </div>
+    </div>
+</div>
+
+{% endblock %}

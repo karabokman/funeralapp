@@ -1,0 +1,32 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title  %}
+Edit Plan
+{% endblock %}
+
+
+{% block content %}
+{% include 'partials/_messages.html' %}
+<div class="container-fluid pt-4 px-4">
+    <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+        <h1 class="h2">Edit Plan</h1>
+    </div>
+
+    <form action="{% url 'edit-plan' plan.id %}" method="post">
+        {% csrf_token %}
+        <div class="form-floating mb-3">
+            <input type="text" value="{{plan.name}}" name="name" class="form-control" id="floatingText"  required>
+            <label for="floatingText">Name</label>
+        </div>
+
+        <div class="form-floating mb-3">
+            <input type="number" value="{{plan.price}}" name="amount" class="form-control" id="floatingText" required>
+            <label for="floatingText">Amount</label>
+        </div>
+        <button type="submit" class="btn btn-secondary py-3 w-100 mb-4">Save</button>
+    </form>
+</div>
+
+
+{% endblock %}

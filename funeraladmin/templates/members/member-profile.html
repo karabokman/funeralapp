@@ -1,0 +1,420 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title  %}
+Member Profile
+{% endblock %}
+
+{% block content %}
+
+{% include 'partials/_messages.html' %}
+
+<div class="container-fluid pt-4 px-4">
+    <div class="bg-light rounded p-4">
+        <div class="d-flex align-items-center justify-content-between mb-4">
+
+            <h6 class="mb-0"><strong>Policy Number: </strong>{{member.policy_no}}</h6>
+            <div class="button-group">
+                {% if user.role == 'SUPER-ADMIN'%}
+                <a class="btn btn-sm btn-danger" href="{% url 'delete-member' member.id %}">Delete</a>
+                {% endif %}
+                <a class="btn btn-sm btn-primary" href="{% url 'member-transactions' member.id  %}">Transactions</a>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<div class="container-fluid pt-4 px-4">
+    <div class="bg-light rounded p-4">
+        <div class="bd-example-snippet bd-code-snippet"><div class="bd-example">
+        <div class="accordion" id="accordionExample">
+          <div class="accordion-item">
+            <h4 class="accordion-header" id="headingOne">
+              <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
+                Principal Member
+              </button>
+            </h4>
+            <div id="collapseOne" class="accordion-collapse collapse show" aria-labelledby="headingOne" data-bs-parent="#accordionExample">
+              <div class="accordion-body">
+
+                  <form action="{% url 'member-profile' member.id %}" method="post">
+    {% csrf_token %}
+    <div class="bg-light row g-4">
+        <div class="col-sm-12 col-md-6 col-xl-6">
+        <div class="row g-4">
+        <div class="col">
+            <input type="text" value="{{member.full_name}}" class="form-control" placeholder="Enter Full name(s)" name="name" required />
+        </div>
+        <div class="col">
+            <input type="text" value="{{member.surname}}"  class="form-control" placeholder="Enter Surname" name="surname" required />
+        </div>
+    </div>
+    <br>
+    <div class="row">
+        <div class="col">
+            <input type="text" value="{{member.email}}" class="form-control" placeholder="Enter email" name="email" />
+         </div>
+         <div class="col">
+            <input type="text" value="{{member.identity_no}}" class="form-control" placeholder="Enter Identity Number" name="idnum" required />
+         </div>
+      </div>
+      <br>
+      <div class="row">
+         <div class="col">
+            <input type="text" value="{{member.contacts}}"  class="form-control" placeholder="Enter Contacts" name="contacts" required />
+         </div>
+         <div class="col">
+            <select class="form-select" id="gender" name="gender" required="required">
+                <option selected>{{member.gender}}</option>
+                {% if member.gender == 'FEMALE' %}
+               <option>MALE</option>
+                <option>OTHER</option>
+                {% elif member.gender == 'MALE' %}
+                <option>FEMALE</option>
+                <option>OTHER</option>
+                {% else %}
+                <option>FEMALE</option>
+                <option>MALE</option>
+                {% endif %}
+            </select>
+         </div>
+         <div class="col">
+            <select class="form-select" id="marital" name="marital" required="required">
+                <option selected>{{member.marital_status}}</option>
+                {% if member.marital_status == 'MARRIED' %}
+                <option>SINGLE</option>
+                {% else %}
+                <option>MARRIED</option>
+                {% endif %}
+            </select>
+            </div>
+         </div>
+            <br>
+            <div class="row">
+            <div class="col">
+                <label for="birthday">Date of Birth</label>
+                <input type="date" value="{{member.date_of_birth|date:'Y-m-d'}}" class="form-control" id="birthday" name="birthday" required/>
+
+            </div>
+            </div>
+            <br>
+            <div class="row">
+            <div class="col">
+                <label for="inception">Inception</label>
+                <input type="date" value="{{membCover.inception|date:'Y-m-d'}}" class="form-control" id="inception" name="inception" required/>
+
+            </div>
+            </div>
+        </div>
+        <div class="col-sm-12 col-md-6 col-xl-6">
+        <div class="row">
+        <div class="col">
+            <input type="text"  value="{{membAddress.street}}" class="form-control" placeholder="Enter Address" name="address" required />
+        </div>
+    </div>
+    <br>
+    <div class="row">
+        <div class="col">
+            <input type="text" value="{{membAddress.city}}" class="form-control" placeholder="Enter City" name="city" required/>
+         </div>
+      </div>
+      <br>
+      <div class="row">
+         <div class="col">
+            <select class="form-select" name="province" required="required">
+                <option selected>{{membAddress.province}}</option>
+               <option>Gauteng</option>
+               <option>Limpopo</option>
+               <option>Northern Cape</option>
+                <option>Western Cape</option>
+                <option>Eastern Cape</option>
+                <option>Mpumalanga</option>
+                <option>North West</option>
+                <option>Free State</option>
+                <option>Kwa-Zulu Natal</option>
+            </select>
+         </div>
+          <div class="col">
+            <input type="text" value="{{membAddress.zip}}" class="form-control" placeholder="Enter Postal Code" name="zipcode" required />
+         </div>
+         </div>
+            <br>
+            <div class="row">
+                <div class="col">
+                <label for="plan1">Cover Option:</label>
+                <select class="form-select" id="plan1" name="plan">
+                    <option selected>{{membCover.product.name}}</option>
+                    {% for option in options %}
+                    {% if membCover.product.name != option.name %}
+                    <option>{{option.name}}</option>
+                    {% endif %}
+                    {% endfor %}
+                </select>
+            </div>
+            </div>
+            <br>
+            <div class="row">
+            <div class="col">
+                <label for="covered">Covered</label>
+                <input type="date" value="{{membCover.Covered|date:'Y-m-d'}}" class="form-control" id="covered" name="covered" required/>
+            </div>
+            </div>
+        </div>
+        {% if user.role == 'SUPER-ADMIN' or user.role == 'ADMIN' %}
+        <button type="submit" class="btn btn-outline-secondary py-3 w-100 mb-4">Save</a></button>
+        {% endif %}
+    </div>
+</div>
+
+
+</form>
+            </div>
+          </div>
+            {% if spouse %}
+          <div class="accordion-item">
+            <h4 class="accordion-header" id="headingTwo">
+              <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
+                Spouse
+              </button>
+            </h4>
+            <div id="collapseTwo" class="accordion-collapse collapse" aria-labelledby="headingTwo" data-bs-parent="#accordionExample">
+              <div class="accordion-body">
+
+                  <form action="{% url 'add-spouse' member.id %}" method="post">
+                {% csrf_token %}
+                <div class="row g-4">
+        <div class="col">
+            <input type="text" value="{{spouse.full_name}}" class="form-control" placeholder="Enter Full name(s)" name="spname" required />
+        </div>
+        <div class="col">
+            <input type="text" value="{{spouse.surname}}" class="form-control" placeholder="Enter Surname" name="spsurname" required />
+        </div>
+    </div>
+    <br>
+    <div class="row">
+        <div class="col">
+            <input type="text" value="{{spouse.contacts}}" class="form-control" placeholder="Enter Contacts" name="spcontacts" />
+         </div>
+         <div class="col">
+            <input type="text" value="{{spouse.identity_no}}" class="form-control" placeholder="Enter Identity Number" name="spidnum" required />
+         </div>
+      </div>
+      <br>
+                      {% if user.role == 'SUPER-ADMIN' or user.role == 'ADMIN' %}
+                      <button type="submit" class="btn btn-outline-secondary py-3 w-100 mb-4">Save</button>
+                      {% endif %}
+                  </form>
+
+              </div>
+          </div>
+              {% endif %}
+            <div class="accordion-item">
+            <h4 class="accordion-header" id="headingThree">
+              <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseThree" aria-expanded="false" aria-controls="collapseThree">
+                Children
+              </button>
+            </h4>
+            <div id="collapseThree" class="accordion-collapse collapse" aria-labelledby="headingThree" data-bs-parent="#accordionExample">
+              <div class="accordion-body">
+                  <form action="{% url 'add-kid' member.id %}" method="post">
+                      {% csrf_token %}
+                  <div class="row">
+        <div class="col">
+            <input type="text" class="form-control" placeholder="Enter Full names" name="kidnam" required/>
+         </div>
+         <div class="col">
+            <input type="text" class="form-control" placeholder="Enter Surname" name="kidsurnam" required />
+         </div>
+            <div class="col">
+            <input type="text" class="form-control" placeholder="Enter Identity Number" name="kididnum" required />
+         </div>
+              <div class="col">
+           <button type="submit" class="btn btn-outline-secondary">Add</button>
+         </div>
+      </div>
+                  </form>
+                  <br>
+
+                  <div class="table-responsive">
+
+            <table class="table text-start align-middle table-bordered table-hover mb-0">
+
+                <thead>
+
+                <tr>
+
+
+                    <th scope="col">Full name</th>
+
+                    <th scope="col">Surname</th>
+
+                    <th scope="col">Identity No</th>
+
+                    <th scope="col">Action</th>
+
+                </tr>
+
+                </thead>
+
+                {% if kids %}
+
+                <tbody>
+
+                {% for kid in kids %}
+
+                <tr>
+
+
+                    <td>{{kid.full_name}}</td>
+
+                    <td>{{kid.surname}}</td>
+
+                    <td>{{kid.identity_no}}</td>
+
+                    <td><a class="btn btn-sm btn-primary" href="{% url 'delete-kid' kid.id %}">Delete</a></td>
+                </tr>
+                {% endfor %}
+                </tbody>
+                {% else %}
+                <tr>
+                    <td class="text-center" colspan="4">No Children found</td>
+                </tr>
+                {% endif %}
+            </table>
+        </div>
+
+               </div>
+            </div>
+          </div>
+            <div class="accordion-item">
+            <h4 class="accordion-header" id="headingFour">
+              <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseFour" aria-expanded="false" aria-controls="collapseFour">
+                Dependants
+              </button>
+            </h4>
+            <div id="collapseFour" class="accordion-collapse collapse" aria-labelledby="headingFour" data-bs-parent="#accordionExample">
+              <div class="accordion-body">
+
+                  <form action="{% url 'add-dependant' member.id %}" method="post">
+                      {% csrf_token %}
+                  <div class="row">
+        <div class="col">
+            <input type="text" class="form-control" placeholder="Enter Full names" name="dpnam" required/>
+         </div>
+         <div class="col">
+            <input type="text" class="form-control" placeholder="Enter Surname" name="dpsurnam" required />
+         </div>
+            <div class="col">
+            <input type="text" class="form-control" placeholder="Enter Identity Number" name="dpidnum" required />
+         </div>
+              <div class="col">
+           <button type="submit" class="btn btn-outline-secondary">Add</button>
+         </div>
+      </div>
+                  </form>
+                  <br>
+
+                  <div class="table-responsive">
+
+            <table class="table text-start align-middle table-bordered table-hover mb-0">
+
+                <thead>
+
+                <tr>
+
+
+                    <th scope="col">Full name</th>
+
+                    <th scope="col">Surname</th>
+
+                    <th scope="col">Identity No</th>
+
+                    <th scope="col">Action</th>
+
+                </tr>
+
+                </thead>
+
+                {% if depends %}
+
+                <tbody>
+
+                {% for depend in depends %}
+
+                <tr>
+
+
+                    <td>{{depend.full_name}}</td>
+
+                    <td>{{depend.surname}}</td>
+
+                    <td>{{depend.identity_no}}</td>
+
+                    <td><a class="btn btn-sm btn-primary" href="{% url 'delete-dependant' depend.id %}">Delete</a></td>
+                </tr>
+                {% endfor %}
+                </tbody>
+                {% else %}
+                <tr>
+                    <td class="text-center" colspan="4">No Dependants found</td>
+                </tr>
+                {% endif %}
+            </table>
+        </div>
+
+             </div>
+            </div>
+          </div>
+          <div class="accordion-item">
+            <h4 class="accordion-header" id="headingFive">
+              <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseFive" aria-expanded="false" aria-controls="collapseFive">
+                Beneficiary
+              </button>
+            </h4>
+            <div id="collapseFive" class="accordion-collapse collapse" aria-labelledby="headingFive" data-bs-parent="#accordionExample">
+              <div class="accordion-body">
+
+                  <form action="{% url 'add-beneficiary' member.id %}" method="post">
+                {% csrf_token %}
+                <div class="row g-4">
+        <div class="col">
+            <input type="text" value="{{bene.full_name}}" class="form-control" placeholder="Enter Full name(s)" name="bname" required />
+        </div>
+        <div class="col">
+            <input type="text" value="{{bene.surname}}" class="form-control" placeholder="Enter Surname" name="bsurname" required />
+        </div>
+    </div>
+    <br>
+    <div class="row">
+        <div class="col">
+            <input type="text" value="{{bene.contacts}}" class="form-control" placeholder="Enter Contacts" name="bcontacts" />
+         </div>
+         <div class="col">
+            <input type="text" value="{{bene.identity_no}}" class="form-control" placeholder="Enter Identity Number" name="bidnum" required />
+         </div>
+      </div>
+      <br>
+                      <div class="row">
+                          <div class="col">
+                              <input type="text" value="{{bene.relation}}" class="form-control" placeholder="Enter Relation" name="relation" />
+                          </div>
+                      </div>
+                      <br>
+                      {% if user.role == 'SUPER-ADMIN' or user.role == 'ADMIN' %}
+                      <button type="submit" class="btn btn-outline-secondary py-3 w-100 mb-4">Save</button>
+                      {% endif %}
+                  </form>
+
+              </div>
+            </div>
+          </div>
+        </div>
+        </div></div>
+    </div>
+</div>
+
+
+
+
+{% endblock %}
